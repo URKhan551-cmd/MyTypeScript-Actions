@@ -44,7 +44,31 @@ interface ApiResponse<T>{
     data: T
 }
 
-const res: ApiResponse<{ flavour: string }> = {
-    status: 200,
-    data: {flavour: "masasla"}
+type product = {
+    name: string,
+    price: number
 }
+// const res: ApiResponse<{ flavour: string }> = {
+//     status: 200,
+//     data: {flavour: "masasla"}
+// }
+const res: ApiResponse<product> = {
+    status: 200,
+    data: {name: "oud", price: 2000}
+}
+
+
+// Constraints (VERY IMPORTANT 🔥)
+// Sometimes you want to restrict generic types
+
+function getLength<T extends { length: number }>(item: T) {
+  return item.length
+}
+
+// works 
+getLength("khann");
+getLength([9, 78, 9]);
+// getLength(678);   this one cause an error we have a data type T with property Length than its okay but here is no length prop
+
+
+
