@@ -65,11 +65,13 @@ abstract class Bug<T> {
     this.emojiElement = emojiElement;
   }
 
+  
   abstract render (): void;
 }
 
 // Since Bee is a concrete class extending an abstract class, 
 // you must do two things:Call super(emojiElement) inside the constructor to pass the HTML element up to the parent Bug class.
+
 
 class Bee extends Bug<string>{
   constructor(emojiElement: HTMLParagraphElement){
@@ -85,3 +87,57 @@ class Bee extends Bug<string>{
     this.emojiElement.innerText = this.emoji;
   }
 }
+
+// override render(): void: Fulfills the abstract requirement from the Bug 
+// base class.this.emojiElement.innerText = this.emoji;: Dynamically injects the spider emoji ("🕷️") into your HTML paragraph element.
+
+class Spider extends Bug<string> {
+  constructor(emojiElement: HTMLParagraphElement) {
+    super(emojiElement);
+    this.emoji = "🕷️";
+  }
+  
+  override render(){
+    this.emojiElement.innerText = this.emoji;
+  }
+}
+
+
+
+
+// instanceof HTMLSelectElement: This natively checks if the object exists and
+// belongs to the HTML <select> element class at runtime.element is HTMLSelectElement: 
+// This is a TypeScript Type Guard return type. It tells TypeScript that if this function returns true, 
+// the element parameter can safely be treated as an HTMLSelectElement anywhere else in your code.
+function isSelect(element: EventTarget | null): element is HTMLSelectElement{
+  return element instanceof HTMLSelectElement;
+}
+
+// In TypeScript, the non-null assertion operator (!) must be placed right after the function expression 
+// that returns the potentially null value (in this case, document.getElementById(...)).
+
+// Placement of !: Placing ! immediately after document.getElementById("bug-emoji") tells TypeScript: 
+// "I am certain this DOM query will find an element, so do not treat the return value as null.
+// "Type Inference: TypeScript automatically infers that bugEmojiElement is a concrete HTMLElement rather than HTMLElement | null.
+
+const bugEmojiElement = document.querySelector<HTMLParagraphElement>('#bug-emoji')!;
+
+
+
+// In TypeScript, Record<string, Bug<string>> is a built-in utility type that defines the shape of an object 
+// dictionary (or a map).It explicitly tells TypeScript exactly what kinds of keys and values are allowed 
+// inside the 
+// object:typescriptRecord< KEY_TYPE , VALUE_TYPE >
+
+// string (The Key): Every key (property name) added to this object must be a plain string 
+// (for example: "bee", "spider", or "ant").Bug<string> (The Value): Every value assigned to 
+ // those keys must be an instance of a class that inherits from Bug<string> (like your Bee or Spider instances).
+const bugMap: Record<string,  Bug<string>> = {
+   bee: new Bee(bugEmojiElement),
+  spider: new Spider(bugEmojiElement),
+
+}
+
+// new Bee(bugEmojiElement): Instantiates a new concrete Bee class, 
+// passing your stored HTML element into its constructor.bugMap["bee"] = ...: 
+// Pairs the string key "bee" to that specific instance inside the record, making it easy to fetch dynamically later.
