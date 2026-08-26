@@ -141,3 +141,27 @@ const bugMap: Record<string,  Bug<string>> = {
 // new Bee(bugEmojiElement): Instantiates a new concrete Bee class, 
 // passing your stored HTML element into its constructor.bugMap["bee"] = ...: 
 // Pairs the string key "bee" to that specific instance inside the record, making it easy to fetch dynamically later.
+
+// TWO POSSIBLE WAYS TO GET THE ELEEMNT FROM DOM 
+// Option 1: Using document.querySelector (Recommended)This matches your intended syntax style perfectly,
+// as querySelector natively accepts generic type parameters:typescript
+const selectElement = document.querySelector<HTMLSelectElement>("#species")!;
+
+// Option 2: Using document.getElementById with a type assertionIf you must 
+// use getElementById, you fetch the element first, apply the ! operator, 
+// and then use the as keyword to tell TypeScript it is an HTMLSelectElement:typescript
+
+ const selectElement = document.getElementById("species")! as HTMLSelectElement;
+
+selectElement.addEventListener("change", (e) => {
+  if (isSelect(e.target)) {
+    // 1. Get the string value ('bee' or 'spider') from the dropdown
+    const selectedBugKey = e.target.value;
+    
+    // 2. Look it up in the bugMap dictionary
+    const chosenBug = bugMap[selectedBugKey];       // bugMap is an object check the clicked value is what inside  the map Object
+    
+    // 3. Call its render method to display the emoji on screen
+    chosenBug.render();
+  }
+});
