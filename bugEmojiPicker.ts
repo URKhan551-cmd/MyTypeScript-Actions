@@ -67,3 +67,21 @@ abstract class Bug<T> {
 
   abstract render (): void;
 }
+
+// Since Bee is a concrete class extending an abstract class, 
+// you must do two things:Call super(emojiElement) inside the constructor to pass the HTML element up to the parent Bug class.
+
+class Bee extends Bug<string>{
+  constructor(emojiElement: HTMLParagraphElement){
+   // Pass the element up to the parent Bug constructor
+    super(emojiElement);
+    
+    // You can also initialize your emoji string here
+    this.emoji = "🐝"; 
+  }
+
+  // Uses 'override' to cleanly implement the abstract method from the parent class
+  override render(): void {
+    this.emojiElement.innerText = this.emoji;
+  }
+}
